@@ -18,9 +18,10 @@ PDFShart or SharpPDF was refered to make my own pdf library (SokeePdfLib).
 It's not perfect. 
 But it's simple to expand to meet your requirement. 
 
-# How to use 
-## Text sample 
+## PDF format sample 
 refer HowWrite/MainPage.xaml.cs 
+
+PDF is just a format. The following shows how to write a file with PDF format.
 
 ### 1. Create a file first
 <pre><code>
@@ -31,7 +32,7 @@ With this code, "sample.pdf" will be created at Download folder of yours.
 
 ### 2. write a text with pdf format
 <pre><code>
-await WriteToAsync(file, "%PDF-1.4");
+            await WriteToAsync(file, "%PDF-1.4");
             await WriteToAsync(file, "1 0 obj <</Type /Catalog /Pages 2 0 R>>");
             await WriteToAsync(file, "endobj");
             await WriteToAsync(file, "2 0 obj <</Type /Pages /Kids [3 0 R] /Count 1>>");
@@ -64,4 +65,38 @@ await WriteToAsync(file, "%PDF-1.4");
 </code></pre>
 
 You can find the pdf in the "sample.pdf" file. 
+
+# How to use SokeePdfLib
+refer UwpPdf/MainPage.xaml.cs 
+
+SokeePdfLib is a library to write PDF file. 
+
+## refer the following code 
+<pre><code>
+        private async void DoTestAsync(object sender, RoutedEventArgs e)
+        {
+            PdfDocument doc = new PdfDocument();
+
+            pdfPage page = doc.addPage();
+            page.addText("Hello PDF 10, 0", 10, 0, SokeePdfLib.Enumerators.predefinedFont.csCourier, 24, SokeePdfLib.Enumerators.predefinedColor.csBlack);
+            //await manuplateImageAsync(page, 10, 0);
+            await addImageOn(page);
+
+            pdfPage page2 = doc.addPage();
+            page2.addText("Hello PDF 10, 100", 10, 100, SokeePdfLib.Enumerators.predefinedFont.csCourier, 24, SokeePdfLib.Enumerators.predefinedColor.csBlack);
+            //await manuplateImageAsync(page2, 10, 100);
+            await addImageOn(page2);
+
+            pdfPage page3 = doc.addPage();
+            page3.addText("Hello PDF 10, 200", 10, 200, SokeePdfLib.Enumerators.predefinedFont.csCourier, 24, SokeePdfLib.Enumerators.predefinedColor.csBlack);
+            //await manuplateImageAsync(page3, 10, 200);
+            await addImageOn(page3);
+
+            doc.CreatePDFAsync("hello.pdf");
+
+        }
+    }
+</code></pre>
+
+You can find the pdf in the "hello.pdf" file in your Download folder. 
 
