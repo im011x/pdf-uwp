@@ -98,11 +98,12 @@ namespace SokeePdfLib
             //_height = 792;
 
             // A4 
-            _width = 1200;
+            _width =1200;
             _height = (int) ( ((long) 1200) * 1.4142857 );
 
             _elements = new List<pdfElement>();
         }
+
 
         /// <summary>
         /// Class's constructor
@@ -266,14 +267,13 @@ namespace SokeePdfLib
 
         }
 #else 
-        public async void addImage(IRandomAccessStream jpegStream)
+        public async Task addImage(IRandomAccessStream jpegStream)
         {
             var decoder = await BitmapDecoder.CreateAsync(jpegStream);
             int imageW = (int)decoder.PixelWidth;
             int imageH = (int)decoder.PixelHeight;
             int centerX = (_width - imageW)/2;
             int centerY = (_height - imageH)/2;
-
             ulong jpegImageSize = jpegStream.Size;
 
             byte[] jpegImageBytes = new byte[jpegImageSize];

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Imaging;
+using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -114,9 +115,17 @@ namespace UwpPdf
             page3.addText("Hello PDF 10, 200", 10, 200, SokeePdfLib.Enumerators.predefinedFont.csCourier, 24, SokeePdfLib.Enumerators.predefinedColor.csBlack);
             //await manuplateImageAsync(page3, 10, 200);
             await addImageOn(page3);
-
-            doc.CreatePDFAsync("hello.pdf");
-
+            
+            var dialog = new FileSavePicker();
+            dialog.DefaultFileExtension = ".pdf";
+            dialog.FileTypeChoices.Add("PDF", new[] { ".pdf" });
+            dialog.SuggestedStartLocation = PickerLocationId.Desktop;
+            dialog.SuggestedFileName = "untitled";
+            var file = await dialog.PickSaveFileAsync();
+            if (file != null)
+            {
+                doc.CreatePDFAsync(file);
+            }
         }
     }
 }

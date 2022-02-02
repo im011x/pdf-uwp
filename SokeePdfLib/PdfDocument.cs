@@ -150,15 +150,23 @@ namespace SokeePdfLib
             _trailer = new PdfTrailer(counterID - 1);
         }
 
-        public async void CreatePDFAsync(string filename)
+        public async Task CreatePDFAsync(string filename)
         {
             StorageFile storage_file = await DownloadsFolder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
             Debug.WriteLine("Creating PDF file - " + storage_file.DisplayName);
 
-            writePDFAsync(storage_file);
+            await writePDFAsync(storage_file);
+        }
+        /// <summary>
+        /// Write PDF document in the given file
+        /// </summary>
+        /// <param name="dest"></param>
+        public async Task CreatePDFAsync(StorageFile dest)
+        {
+            await writePDFAsync(dest);
         }
 
-        private async void writePDFAsync(StorageFile storageFile)
+        private async Task writePDFAsync(StorageFile storageFile)
         {
             Initialize();
 
@@ -247,9 +255,7 @@ namespace SokeePdfLib
 
         private async Task WriteToFileAsync(StorageFile file, MemoryStream memoryStream)
         {
-            Stream fileStream = await file.OpenStreamForWriteAsync();
-            fileStream.Write(memoryStream.ToArray(), 0, (int) memoryStream.Length);
-            fileStream.Dispose();
+            await FileIO.WriteBytesAsync(file, memoryStream.GetBuffer());
         }
 
         private ulong WriteBytesToBuffer(MemoryStream memoryStream, byte[] content, bool addTrailer)
